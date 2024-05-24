@@ -1,12 +1,16 @@
-﻿using BepInEx;
+﻿using AngryTulipSnakes.Configs;
+using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 
 namespace AngryTulipSnakes
 {
     [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
+    [BepInDependency("io.github.CSync", BepInDependency.DependencyFlags.HardDependency)]
     public class AngryTulipSnakes : BaseUnityPlugin
     {
+        internal static ATSConfigs atsConfigs;
+
         public static AngryTulipSnakes Instance { get; private set; } = null!;
         internal new static ManualLogSource Logger { get; private set; } = null!;
         internal static Harmony? Harmony { get; set; }
@@ -15,6 +19,7 @@ namespace AngryTulipSnakes
         {
             Logger = base.Logger;
             Instance = this;
+            atsConfigs = new ATSConfigs(Config);
 
             Patch();
 

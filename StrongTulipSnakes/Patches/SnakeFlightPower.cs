@@ -1,3 +1,4 @@
+using AngryTulipSnakes.Configs;
 using HarmonyLib;
 
 namespace AngryTulipSnakes.Patches
@@ -5,7 +6,6 @@ namespace AngryTulipSnakes.Patches
     [HarmonyPatch(typeof(FlowerSnakeEnemy))]
     public class SnakeFlightPower
     {
-
         private static bool boostedFlightPower = false;
 
         [HarmonyPatch("MainSnakeActAsConductor")]
@@ -16,8 +16,8 @@ namespace AngryTulipSnakes.Patches
             if (__instance.activatedFlight && !boostedFlightPower)
             {
                 boostedFlightPower = true;
-                __instance.flightPower = 40f;
-                __instance.clingingToPlayer.enemiesOnPerson += 10;
+                __instance.flightPower = 8 * ATSConfigs.Instance.YOINK_POWER_MULTIPLPLIER;
+                __instance.clingingToPlayer.enemiesOnPerson +=  2 * ATSConfigs.Instance.YOINK_POWER_MULTIPLPLIER;
             }
 
             if (!__instance.activatedFlight &&  boostedFlightPower)
@@ -26,7 +26,7 @@ namespace AngryTulipSnakes.Patches
                 __instance.clingingToPlayer.enemiesOnPerson = 0;
             }
 
-            if (__instance.clingingToPlayer.thisPlayerBody.position.y >= 65f)
+            if (__instance.clingingToPlayer.thisPlayerBody.position.y >= ATSConfigs.Instance.DROP_HEIGHT)
             {
                 __instance.flightPower = 0f;
                 __instance.clingPosition = 0;
